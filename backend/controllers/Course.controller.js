@@ -11,24 +11,23 @@ const getAllCourses = catchAsynError(async function getAllCourses(
   resp,
   next
 ) {
-  // const keyword = req.query.keyword || "";
-  // const category = req.query.category || "";
+  const keyword = req.query.keyword || "";
+  const category = req.query.category || "";
 
-  // const courses = await Course.find({
-  //   title:{
-  //     $regex:keyword,
-  //     $options:"i",
-  //   },
-  //   category:{
-  //     $regex:category,
-  //     $options:"i",
-  //   }
-  // }).select("-lectures");
-  // resp.status(200).json({
-  //   success: true,
-  //   courses,
-  // });
-  resp.send("Working");
+  const courses = await Course.find({
+    title: {
+      $regex: keyword,
+      $options: "i",
+    },
+    category: {
+      $regex: category,
+      $options: "i",
+    },
+  }).select("-lectures");
+  resp.status(200).json({
+    success: true,
+    courses,
+  });
 });
 
 const createCourse = catchAsynError(async function getAllCourses(

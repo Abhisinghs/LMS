@@ -77,13 +77,11 @@ const getRazorpayKey = catchAsynError(async (req, resp, next) => {
   });
 });
 
-
 const cancelSubscription = catchAsynError(async (req, resp, next) => {
+  const user = await User.findById(req.user._id);
 
-  const user= await User.findById(req.user._id);
-
-  const subscriptionId= user.subscription.id;
-  let refund= false;
+  const subscriptionId = user.subscription.id;
+  let refund = false;
 
   await instance.subscriptions.cancel(subscriptionId);
 
@@ -101,16 +99,21 @@ const cancelSubscription = catchAsynError(async (req, resp, next) => {
   // }
 
   // await payment.remove();
-  user.subscription.id= undefined;
-  user.subscription.status= undefined;
+  user.subscription.id = undefined;
+  user.subscription.status = undefined;
   user.save();
-  
+
   resp.status(200).json({
     success: true,
-    message:
-    refund?"Subscription Cancelled, You will receive full refund within 7 days."
-    :"Subscription Cancelled, Now refund initiated as subscription was cancelled after 7 days."
+    message: refund
+      ? "Subscription Cancelled, You will receive full refund within 7 days."
+      : "Subscription Cancelled, Now refund initiated as subscription was cancelled after 7 days.",
   });
 });
 
-export { buySubscription, paymentVerification, getRazorpayKey,cancelSubscription };
+export {
+  buySubscription,
+  paymentVerification,
+  getRazorpayKey,
+  cancelSubscription,
+};
