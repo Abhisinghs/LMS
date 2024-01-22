@@ -16,7 +16,7 @@ const app = express();
 app.use("/api/v1", course);
 
 app.use("/", (req, res) => {
-  res.json({ message: "Hello Engineer" });
+  res.json({ message: "Hello Engineers" });
 });
 
 export default app;
